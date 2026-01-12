@@ -11,24 +11,37 @@ import {
   Settings,
   HelpCircle
 } from "lucide-react";
+import { useApp } from "@/contexts/AppContext";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "דאשבורד", active: true },
-  { icon: Wallet, label: "כספים ונזילות", active: false },
-  { icon: Shield, label: "ביטוחים", active: false },
-  { icon: TrendingUp, label: "השקעות", active: false },
-  { icon: Home, label: "נכסים ונדל״ן", active: false },
-  { icon: FileText, label: "מסמכים", active: false },
+  { icon: LayoutDashboard, label: "דאשבורד", id: "dashboard" },
+  { icon: Wallet, label: "כספים ונזילות", id: "finance" },
+  { icon: Shield, label: "ביטוחים", id: "insurance" },
+  { icon: TrendingUp, label: "השקעות", id: "investments" },
+  { icon: Home, label: "נכסים ונדל״ן", id: "assets" },
+  { icon: FileText, label: "מסמכים", id: "documents" },
 ];
 
 const bottomItems = [
-  { icon: MessageSquare, label: "צ'אט חכם", active: false },
-  { icon: Users, label: "שיתוף והרשאות", active: false },
-  { icon: Settings, label: "הגדרות", active: false },
-  { icon: HelpCircle, label: "עזרה", active: false },
+  { icon: MessageSquare, label: "צ'אט חכם", id: "chat" },
+  { icon: Users, label: "שיתוף והרשאות", id: "sharing" },
+  { icon: Settings, label: "הגדרות", id: "settings" },
+  { icon: HelpCircle, label: "עזרה", id: "help" },
 ];
 
 const Sidebar = () => {
+  const { activeSection, setActiveSection, setIsChatOpen, setIsSettingsOpen } = useApp();
+
+  const handleItemClick = (id: string) => {
+    if (id === "chat") {
+      setIsChatOpen(true);
+    } else if (id === "settings") {
+      setIsSettingsOpen(true);
+    } else {
+      setActiveSection(id);
+    }
+  };
+
   return (
     <motion.aside
       initial={{ opacity: 0, x: 50 }}
@@ -43,8 +56,9 @@ const Sidebar = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
+            onClick={() => handleItemClick(item.id)}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-              item.active
+              activeSection === item.id
                 ? "bg-primary text-primary-foreground shadow-soft"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
@@ -62,6 +76,7 @@ const Sidebar = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3, delay: 0.4 + index * 0.05 }}
+            onClick={() => handleItemClick(item.id)}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
           >
             <item.icon className="h-5 w-5" />
