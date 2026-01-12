@@ -7,7 +7,8 @@ interface Alert {
   description: string;
   date: string;
   type: "urgent" | "warning" | "info";
-  category: "insurance" | "document" | "subscription" | "investment";
+  category: "insurance" | "document" | "subscription" | "investment" | "finance";
+  read?: boolean;
 }
 
 interface AlertsTimelineProps {

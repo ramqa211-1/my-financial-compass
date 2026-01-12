@@ -1,34 +1,41 @@
 import { motion } from "framer-motion";
 import { Plus, Upload, MessageSquare, Search } from "lucide-react";
-
-const actions = [
-  {
-    icon: Plus,
-    label: "הוסף פריט",
-    description: "הוסף נכס או ביטוח חדש",
-    gradient: "from-primary to-primary/80",
-  },
-  {
-    icon: Upload,
-    label: "העלה מסמך",
-    description: "העלה PDF או תמונה",
-    gradient: "from-secondary to-secondary/80",
-  },
-  {
-    icon: MessageSquare,
-    label: "שאל את הבוט",
-    description: "צ'אט חכם עם ה-AI",
-    gradient: "from-accent to-accent/80",
-  },
-  {
-    icon: Search,
-    label: "חיפוש מתקדם",
-    description: "חפש בכל הנתונים",
-    gradient: "from-assets to-assets/80",
-  },
-];
+import { useApp } from "@/contexts/AppContext";
 
 const QuickActions = () => {
+  const { setIsAddItemModalOpen, setIsUploadModalOpen, setIsChatOpen, setIsSearchModalOpen } = useApp();
+
+  const actions = [
+    {
+      icon: Plus,
+      label: "הוסף פריט",
+      description: "הוסף נכס או ביטוח חדש",
+      gradient: "from-primary to-primary/80",
+      onClick: () => setIsAddItemModalOpen(true),
+    },
+    {
+      icon: Upload,
+      label: "העלה מסמך",
+      description: "העלה PDF או תמונה",
+      gradient: "from-secondary to-secondary/80",
+      onClick: () => setIsUploadModalOpen(true),
+    },
+    {
+      icon: MessageSquare,
+      label: "שאל את הבוט",
+      description: "צ'אט חכם עם ה-AI",
+      gradient: "from-accent to-accent/80",
+      onClick: () => setIsChatOpen(true),
+    },
+    {
+      icon: Search,
+      label: "חיפוש מתקדם",
+      description: "חפש בכל הנתונים",
+      gradient: "from-assets to-assets/80",
+      onClick: () => setIsSearchModalOpen(true),
+    },
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -47,6 +54,7 @@ const QuickActions = () => {
             transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
+            onClick={action.onClick}
             className={`group relative overflow-hidden rounded-xl p-4 text-right bg-gradient-to-br ${action.gradient} text-card transition-all hover:shadow-medium`}
           >
             <div className="absolute top-0 left-0 w-full h-full bg-card/0 group-hover:bg-card/10 transition-colors" />

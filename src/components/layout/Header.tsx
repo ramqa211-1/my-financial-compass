@@ -1,11 +1,14 @@
 import { motion } from "framer-motion";
 import { Bell, Settings, User, Menu } from "lucide-react";
+import { useApp } from "@/contexts/AppContext";
 
 interface HeaderProps {
   userName: string;
 }
 
 const Header = ({ userName }: HeaderProps) => {
+  const { setIsNotificationsOpen, setIsSettingsOpen, setIsMobileMenuOpen, unreadAlertsCount } = useApp();
+
   return (
     <motion.header
       initial={{ opacity: 0, y: -20 }}
@@ -17,7 +20,10 @@ const Header = ({ userName }: HeaderProps) => {
         <div className="flex items-center justify-between">
           {/* Logo & Title */}
           <div className="flex items-center gap-4">
-            <button className="lg:hidden p-2 rounded-xl hover:bg-muted transition-colors">
+            <button 
+              className="lg:hidden p-2 rounded-xl hover:bg-muted transition-colors"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
               <Menu className="h-6 w-6 text-foreground" />
             </button>
             <div className="flex items-center gap-3">
@@ -36,15 +42,21 @@ const Header = ({ userName }: HeaderProps) => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => setIsNotificationsOpen(true)}
               className="relative p-2 rounded-xl hover:bg-muted transition-colors"
             >
               <Bell className="h-5 w-5 text-muted-foreground" />
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-destructive" />
+              {unreadAlertsCount > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold flex items-center justify-center">
+                  {unreadAlertsCount}
+                </span>
+              )}
             </motion.button>
             
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => setIsSettingsOpen(true)}
               className="p-2 rounded-xl hover:bg-muted transition-colors"
             >
               <Settings className="h-5 w-5 text-muted-foreground" />
