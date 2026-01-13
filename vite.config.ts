@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: '/', // עבור custom domain, או '/my-financial-compass/' אם זה subdirectory
+  base: '/my-financial-compass/', // עבור GitHub Pages subdirectory
   server: {
     host: "::",
     port: 8080,
