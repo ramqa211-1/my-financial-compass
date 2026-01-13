@@ -1,5 +1,9 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect, useMemo } from "react";
 import { Wallet, Shield, TrendingUp, Home, FileText, LucideIcon } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useFinancialItems } from "@/hooks/useFinancialItems";
+import { useAlerts } from "@/hooks/useAlerts";
+import { useDocuments } from "@/hooks/useDocuments";
 
 export interface FinancialItem {
   id: string;
@@ -11,6 +15,7 @@ export interface FinancialItem {
   expiryDate?: string;
   status: "active" | "frozen" | "expired";
   category: CategoryType;
+  subcategory?: string; // תת-קטגוריה: ביטוח חיים, ביטוח רפואי לילד, ביטוח רכב, וכו'
 }
 
 export interface Alert {
@@ -91,35 +96,19 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-// Initial data
-const initialItems: FinancialItem[] = [
-  { id: "1", name: "חשבון עו״ש", institution: "בנק לאומי", productType: "חשבון בנק", value: 45000, lastUpdated: "2026-01-10", status: "active", category: "finance" },
-  { id: "2", name: "חסכון לכל מטרה", institution: "בנק הפועלים", productType: "חסכון", value: 120000, lastUpdated: "2026-01-05", status: "active", category: "finance" },
-  { id: "3", name: "ביטוח רכב מקיף", institution: "הראל", productType: "ביטוח רכב", value: 4500, lastUpdated: "2025-12-01", expiryDate: "2026-01-26", status: "active", category: "insurance" },
-  { id: "4", name: "ביטוח בריאות", institution: "כלל", productType: "בריאות", value: 6000, lastUpdated: "2025-11-15", status: "active", category: "insurance" },
-  { id: "5", name: "קרן השתלמות", institution: "מיטב דש", productType: "קרן השתלמות", value: 450000, lastUpdated: "2026-01-01", status: "active", category: "investments" },
-  { id: "6", name: "פנסיה", institution: "הפניקס", productType: "פנסיה", value: 350000, lastUpdated: "2026-01-01", status: "active", category: "investments" },
-  { id: "7", name: "דירה בתל אביב", institution: "בבעלות", productType: "נדל״ן", value: 1850000, lastUpdated: "2025-06-01", status: "active", category: "assets" },
-];
-
-const initialAlerts: Alert[] = [
-  { id: "1", title: "חידוש ביטוח רכב", description: "הפוליסה של טויוטה קורולה פגה בעוד 14 יום", date: "26/01/2026", type: "urgent", category: "insurance", read: false },
-  { id: "2", title: "תוקף דרכון", description: "הדרכון שלך יפוג בעוד 3 חודשים", date: "12/04/2026", type: "warning", category: "document", read: false },
-  { id: "3", title: "חידוש מנוי נטפליקס", description: "חיוב אוטומטי של ₪59.90", date: "01/02/2026", type: "info", category: "subscription", read: true },
-  { id: "4", title: "דו״ח רבעוני קרן השתלמות", description: "דו״ח Q4 2025 זמין לצפייה", date: "15/01/2026", type: "info", category: "investment", read: false },
-];
-
-const initialDocuments: Document[] = [
-  { id: "1", name: "דרכון ישראלי", type: "PDF", category: "documents", uploadDate: "2025-01-15", size: "2.4 MB" },
-  { id: "2", name: "פוליסת ביטוח רכב", type: "PDF", category: "insurance", uploadDate: "2025-12-01", size: "1.8 MB" },
-  { id: "3", name: "חוזה שכירות", type: "PDF", category: "assets", uploadDate: "2025-06-10", size: "3.2 MB" },
-];
-
 export const AppProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
   const [activeSection, setActiveSection] = useState("dashboard");
-  const [items, setItems] = useState<FinancialItem[]>(initialItems);
-  const [alerts, setAlerts] = useState<Alert[]>(initialAlerts);
-  const [documents, setDocuments] = useState<Document[]>(initialDocuments);
+  
+  // Supabase hooks - all data comes from Supabase only
+  const { items: supabaseItems, addItem: addItemToSupabase, isLoading: itemsLoading, error: itemsError } = useFinancialItems(user?.id);
+  const { alerts: supabaseAlerts, markAsRead: markAlertAsReadInSupabase, isLoading: alertsLoading, error: alertsError } = useAlerts(user?.id);
+  const { documents: supabaseDocuments, addDocument: addDocumentToSupabase, isLoading: documentsLoading, error: documentsError } = useDocuments(user?.id);
+  
+  // All data comes from Supabase - no local fallback
+  const items = supabaseItems || [];
+  const alerts = supabaseAlerts || [];
+  const documents = supabaseDocuments || [];
   
   // Modals
   const [isAddItemModalOpen, setIsAddItemModalOpen] = useState(false);
@@ -141,26 +130,46 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     )
   );
 
-  const addItem = (item: Omit<FinancialItem, "id">) => {
-    const newItem = { ...item, id: Date.now().toString() };
-    setItems(prev => [...prev, newItem]);
+  const addItem = async (item: Omit<FinancialItem, "id">) => {
+    if (!user) {
+      throw new Error('נא להתחבר כדי להוסיף פריט');
+    }
+    try {
+      await addItemToSupabase(item);
+    } catch (error: any) {
+      console.error('Error adding item to Supabase:', error);
+      throw new Error(`שגיאה בהוספת הפריט: ${error.message || 'שגיאה לא ידועה'}`);
+    }
   };
 
-  const markAlertAsRead = (id: string) => {
-    setAlerts(prev => prev.map(alert => 
-      alert.id === id ? { ...alert, read: true } : alert
-    ));
+  const markAlertAsRead = async (id: string) => {
+    if (!user) {
+      throw new Error('נא להתחבר כדי לעדכן התראות');
+    }
+    try {
+      await markAlertAsReadInSupabase(id);
+    } catch (error: any) {
+      console.error('Error marking alert as read:', error);
+      throw new Error(`שגיאה בעדכון ההתראה: ${error.message || 'שגיאה לא ידועה'}`);
+    }
   };
 
-  const addDocument = (doc: Omit<Document, "id">) => {
-    const newDoc = { ...doc, id: Date.now().toString() };
-    setDocuments(prev => [...prev, newDoc]);
+  const addDocument = async (doc: Omit<Document, "id"> & { file?: File }) => {
+    if (!user) {
+      throw new Error('נא להתחבר כדי להעלות מסמך');
+    }
+    try {
+      await addDocumentToSupabase(doc);
+    } catch (error: any) {
+      console.error('Error adding document to Supabase:', error);
+      throw new Error(`שגיאה בהעלאת המסמך: ${error.message || 'שגיאה לא ידועה'}`);
+    }
   };
 
   const unreadAlertsCount = alerts.filter(a => !a.read).length;
 
   // Calculate categories from items
-  const categories: Category[] = [
+  const categories: Category[] = useMemo(() => [
     { 
       id: "finance", 
       title: "כספים ונזילות", 
@@ -201,7 +210,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       icon: FileText, 
       colorClass: "bg-documents" 
     },
-  ];
+  ], [items, documents]);
 
   return (
     <AppContext.Provider value={{

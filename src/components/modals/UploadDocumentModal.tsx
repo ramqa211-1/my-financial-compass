@@ -44,7 +44,7 @@ const UploadDocumentModal = () => {
     if (file) handleFileSelect(file);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedFile || !category) {
       toast({
         title: "שגיאה",
@@ -54,22 +54,31 @@ const UploadDocumentModal = () => {
       return;
     }
 
-    addDocument({
-      name: selectedFile.name.replace(/\.[^/.]+$/, ""),
-      type: selectedFile.name.split('.').pop()?.toUpperCase() || "FILE",
-      category: category as CategoryType,
-      uploadDate: new Date().toISOString().split('T')[0],
-      size: `${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB`,
-    });
+    try {
+      await addDocument({
+        name: selectedFile.name.replace(/\.[^/.]+$/, ""),
+        type: selectedFile.name.split('.').pop()?.toUpperCase() || "FILE",
+        category: category as CategoryType,
+        uploadDate: new Date().toISOString().split('T')[0],
+        size: `${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB`,
+        file: selectedFile, // העברת הקובץ בפועל
+      });
 
-    toast({
-      title: "הועלה בהצלחה! ✓",
-      description: `${selectedFile.name} נוסף לקטגוריית ${categoryOptions.find(c => c.value === category)?.label}`,
-    });
+      toast({
+        title: "הועלה בהצלחה! ✓",
+        description: `${selectedFile.name} נוסף לקטגוריית ${categoryOptions.find(c => c.value === category)?.label}`,
+      });
 
-    setSelectedFile(null);
-    setCategory("");
-    setIsUploadModalOpen(false);
+      setSelectedFile(null);
+      setCategory("");
+      setIsUploadModalOpen(false);
+    } catch (error: any) {
+      toast({
+        title: "שגיאה",
+        description: error.message || "לא ניתן להעלות את הקובץ. נא לנסות שוב.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

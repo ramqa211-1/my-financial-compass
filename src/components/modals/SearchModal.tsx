@@ -71,7 +71,13 @@ const SearchModal = () => {
                         className="w-full flex items-center gap-3 p-3 rounded-xl text-right transition-colors"
                         onClick={() => { setIsSearchModalOpen(false); setSearchQuery(""); }}
                       >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center bg-${item.category}`}>
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                          item.category === 'finance' ? 'bg-finance' :
+                          item.category === 'insurance' ? 'bg-insurance' :
+                          item.category === 'investments' ? 'bg-investments' :
+                          item.category === 'assets' ? 'bg-assets' :
+                          'bg-documents'
+                        }`}>
                           <Icon className="h-5 w-5 text-card" />
                         </div>
                         <div className="flex-1 min-w-0">

@@ -1,11 +1,18 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, User, Bell, Shield, Palette, LogOut } from "lucide-react";
 import { useApp } from "@/contexts/AppContext";
+import { useAuth } from "@/hooks/useAuth";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
 const SettingsModal = () => {
   const { isSettingsOpen, setIsSettingsOpen } = useApp();
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    setIsSettingsOpen(false);
+  };
 
   return (
     <AnimatePresence>
@@ -43,9 +50,15 @@ const SettingsModal = () => {
                   <User className="h-8 w-8 text-secondary-foreground" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">ישראל ישראלי</p>
-                  <p className="text-sm text-muted-foreground">israel@example.com</p>
-                  <p className="text-xs text-primary mt-1">חשבון אישי</p>
+                  <p className="font-semibold text-foreground">
+                    {user?.user_metadata?.full_name || user?.email || 'ישראל ישראלי'}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {user?.email || 'israel@example.com'}
+                  </p>
+                  <p className="text-xs text-primary mt-1">
+                    {user ? 'חשבון מחובר' : 'חשבון אישי'}
+                  </p>
                 </div>
               </div>
 
@@ -97,10 +110,15 @@ const SettingsModal = () => {
               </div>
 
               {/* Logout */}
-              <button className="w-full flex items-center justify-center gap-2 p-3 rounded-xl text-destructive hover:bg-destructive/10 transition-colors">
-                <LogOut className="h-5 w-5" />
-                <span className="font-medium">התנתק</span>
-              </button>
+              {user && (
+                <button 
+                  onClick={handleSignOut}
+                  className="w-full flex items-center justify-center gap-2 p-3 rounded-xl text-destructive hover:bg-destructive/10 transition-colors"
+                >
+                  <LogOut className="h-5 w-5" />
+                  <span className="font-medium">התנתק</span>
+                </button>
+              )}
             </div>
           </motion.div>
         </motion.div>

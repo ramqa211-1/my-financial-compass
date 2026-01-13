@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { Bell, Settings, User, Menu } from "lucide-react";
 import { useApp } from "@/contexts/AppContext";
+import { useAuth } from "@/hooks/useAuth";
 
-interface HeaderProps {
-  userName: string;
-}
-
-const Header = ({ userName }: HeaderProps) => {
+const Header = () => {
   const { setIsNotificationsOpen, setIsSettingsOpen, setIsMobileMenuOpen, unreadAlertsCount } = useApp();
+  const { user } = useAuth();
+  
+  const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'ישראל ישראלי';
 
   return (
     <motion.header

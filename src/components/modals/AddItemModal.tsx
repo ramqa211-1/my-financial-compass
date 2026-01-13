@@ -27,7 +27,7 @@ const AddItemModal = () => {
     category: "" as CategoryType | "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name || !formData.institution || !formData.category) {
@@ -39,23 +39,31 @@ const AddItemModal = () => {
       return;
     }
 
-    addItem({
-      name: formData.name,
-      institution: formData.institution,
-      productType: formData.productType || "כללי",
-      value: parseFloat(formData.value) || 0,
-      lastUpdated: new Date().toISOString().split('T')[0],
-      status: "active",
-      category: formData.category as CategoryType,
-    });
+    try {
+      await addItem({
+        name: formData.name,
+        institution: formData.institution,
+        productType: formData.productType || "כללי",
+        value: parseFloat(formData.value) || 0,
+        lastUpdated: new Date().toISOString().split('T')[0],
+        status: "active",
+        category: formData.category as CategoryType,
+      });
 
-    toast({
-      title: "נוסף בהצלחה! ✓",
-      description: `${formData.name} נוסף לקטגוריית ${categoryOptions.find(c => c.value === formData.category)?.label}`,
-    });
+      toast({
+        title: "נוסף בהצלחה! ✓",
+        description: `${formData.name} נוסף לקטגוריית ${categoryOptions.find(c => c.value === formData.category)?.label}`,
+      });
 
-    setFormData({ name: "", institution: "", productType: "", value: "", category: "" });
-    setIsAddItemModalOpen(false);
+      setFormData({ name: "", institution: "", productType: "", value: "", category: "" });
+      setIsAddItemModalOpen(false);
+    } catch (error: any) {
+      toast({
+        title: "שגיאה",
+        description: error.message || "לא ניתן להוסיף את הפריט. נא לנסות שוב.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

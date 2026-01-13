@@ -1,73 +1,116 @@
-# Welcome to your Lovable project
+# 💰 המרכז הפיננסי - מערכת ניהול כספים חכמה
 
-## Project info
+## מה זה?
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+**המרכז הפיננסי** זה כמו יומן דיגיטלי לכל הכסף שלך - אבל חכם יותר! 🎯
 
-## How can I edit this code?
+## מה המערכת עושה?
 
-There are several ways of editing your application.
+### 📊 **דאשבורד - המסך הראשי**
+- רואה את כל הכסף שלך במקום אחד
+- גרפים יפים שמראים לך איפה הכסף שלך
+- התראות חשובות (כמו תאריכי תפוגה של ביטוחים)
 
-**Use Lovable**
+### 💳 **כספים ונזילות**
+- חשבונות בנק
+- כרטיסי אשראי
+- הלוואות
+- כל מה שקשור לכסף נזיל
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### 🛡️ **ביטוחים**
+- ביטוח חיים
+- ביטוח רפואי
+- ביטוח רכב
+- ביטוח בית
+- תאריכי תפוגה ותזכורות
 
-Changes made via Lovable will be committed automatically to this repo.
+### 📈 **השקעות**
+- קופות גמל
+- קרנות נאמנות
+- מניות
+- כל ההשקעות שלך במקום אחד
 
-**Use your preferred IDE**
+### 🏠 **נכסים ונדל"ן**
+- דירות
+- בתים
+- קרקעות
+- כל הנכסים שלך
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 📄 **מסמכים**
+- פוליסות ביטוח
+- חוזים
+- מסמכי בנק
+- שמירה מאורגנת של כל המסמכים
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 🤖 **צ'אט חכם**
+- שואל שאלות על הכסף שלך
+- מקבל תשובות חכמות
+- עוזר לך להבין את המצב הפיננסי שלך
 
-Follow these steps:
+### 👥 **שיתוף והרשאות**
+- משתף את הנתונים עם בני משפחה
+- כל אחד רואה רק מה שצריך
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## איך מתחילים?
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 1️⃣ **התקנה מהירה**
+```bash
+# לחץ כפול על הקובץ:
+start.bat
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+או:
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### 2️⃣ **פתח בדפדפן**
+```
+http://localhost:8080
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### 3️⃣ **התחבר עם Google**
+- לחץ על "התחבר עם Google"
+- המערכת תשמור את כל הנתונים שלך בענן
 
-**Use GitHub Codespaces**
+## מה צריך כדי שזה יעבוד?
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### ✅ **חובה:**
+- Node.js (גרסה 18 ומעלה)
+- דפדפן (Chrome, Firefox, Edge)
 
-## What technologies are used for this project?
+### 🔧 **אופציונלי (אבל מומלץ):**
+- **Supabase** - כדי לשמור את הנתונים שלך בענן
+- **Google Account** - כדי להתחבר
+- **OpenAI API** - כדי שהצ'אט יהיה חכם יותר
 
-This project is built with:
+## הערות חשובות
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+✅ **המערכת עובדת גם בלי Supabase!**  
+אם לא תגדיר Supabase, הנתונים יישמרו רק במחשב שלך.
 
-## How can I deploy this project?
+✅ **המערכת עובדת גם בלי OpenAI!**  
+אם לא תגדיר OpenAI, הצ'אט יעבוד עם מערכת בסיסית.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+✅ **הכל מאובטח**  
+הנתונים שלך מוגנים ופרטיים.
 
-## Can I connect a custom domain to my Lovable project?
+## מה יש במערכת?
 
-Yes, you can!
+- 📱 **עיצוב יפה ונוח** - עובד מצוין גם בטלפון
+- 🔔 **התראות חכמות** - תזכורות על תאריכי תפוגה
+- 📊 **גרפים ויזואליים** - רואה את הכסף שלך בצורה ברורה
+- 🔍 **חיפוש מהיר** - מוצא כל דבר בקלות
+- 💬 **צ'אט עם AI** - שואל שאלות ומקבל תשובות
+- 👨‍👩‍👧‍👦 **שיתוף עם משפחה** - כל אחד רואה מה שצריך
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## שאלות?
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- 📖 קרא את `README_SETUP.md` להגדרה מפורטת
+- 🚀 קרא את `QUICK_START.md` להתחלה מהירה
+- 💡 קרא את `SUPABASE_SETUP.md` להגדרת Supabase
+
+---
+
+**נבנה עם ❤️ בישראל**

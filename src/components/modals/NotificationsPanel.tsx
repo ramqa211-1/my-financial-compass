@@ -29,7 +29,7 @@ const NotificationsPanel = () => {
             initial={{ opacity: 0, x: -20, scale: 0.95 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: -20, scale: 0.95 }}
-            className="fixed top-20 left-4 z-50 bg-card rounded-2xl shadow-strong w-80 max-h-[70vh] overflow-hidden"
+            className="fixed top-20 left-4 z-50 bg-card rounded-2xl shadow-strong w-80 max-w-[calc(100vw-2rem)] max-h-[70vh] overflow-hidden sm:left-4 sm:w-80"
           >
             <div className="p-4 border-b border-border flex items-center justify-between">
               <div className="flex items-center gap-2">

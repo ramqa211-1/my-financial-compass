@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { 
   LayoutDashboard, 
@@ -12,6 +13,7 @@ import {
   HelpCircle
 } from "lucide-react";
 import { useApp } from "@/contexts/AppContext";
+import SharingModal from "@/components/modals/SharingModal";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "דאשבורד", id: "dashboard" },
@@ -31,12 +33,15 @@ const bottomItems = [
 
 const Sidebar = () => {
   const { activeSection, setActiveSection, setIsChatOpen, setIsSettingsOpen } = useApp();
+  const [isSharingOpen, setIsSharingOpen] = useState(false);
 
   const handleItemClick = (id: string) => {
     if (id === "chat") {
       setIsChatOpen(true);
     } else if (id === "settings") {
       setIsSettingsOpen(true);
+    } else if (id === "sharing") {
+      setIsSharingOpen(true);
     } else {
       setActiveSection(id);
     }
@@ -84,6 +89,8 @@ const Sidebar = () => {
           </motion.button>
         ))}
       </div>
+      
+      <SharingModal />
     </motion.aside>
   );
 };
