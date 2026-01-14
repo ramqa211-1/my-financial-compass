@@ -13,10 +13,13 @@ const LoginPage = () => {
       setLoading(true);
       setError(null);
       
+      // Use Vite's BASE_URL to handle GitHub Pages subdirectory
+      const redirectUrl = `${window.location.origin}${import.meta.env.BASE_URL}`;
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/`,
+          redirectTo: redirectUrl,
         },
       });
 
