@@ -17,10 +17,10 @@ const DashboardPage = () => {
     { name: "ביטוחים (ערך)", value: categories.find(c => c.id === "insurance")?.value || 0, color: "hsl(245, 58%, 60%)" },
   ];
 
-  // Calculate change (simulated)
+  // Calculate change (simulated) - מטפל במצב שבו אין פריטים
   const previousNetWorth = totalNetWorth * 0.97;
   const changeAmount = totalNetWorth - previousNetWorth;
-  const changePercent = (changeAmount / previousNetWorth) * 100;
+  const changePercent = previousNetWorth > 0 ? (changeAmount / previousNetWorth) * 100 : 0;
 
   return (
     <main className="lg:mr-64 pt-6 pb-12 px-4 md:px-8">

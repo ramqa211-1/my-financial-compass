@@ -13,18 +13,39 @@ const LoginPage = () => {
       setLoading(true);
       setError(null);
       
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/3e0eb858-a1e3-4b8e-952d-5a749aabbdcd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LoginPage.tsx:11',message:'handleGoogleLogin entry',data:{origin:window.location.origin,baseUrl:import.meta.env.BASE_URL,fullUrl:window.location.href},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
+      
       // Use Vite's BASE_URL to handle GitHub Pages subdirectory
       const redirectUrl = `${window.location.origin}${import.meta.env.BASE_URL}`;
       
-      const { error } = await supabase.auth.signInWithOAuth({
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/3e0eb858-a1e3-4b8e-952d-5a749aabbdcd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LoginPage.tsx:17',message:'redirectUrl calculated',data:{redirectUrl,redirectUrlLength:redirectUrl.length,hasSpaces:redirectUrl.includes(' '),trimmed:redirectUrl.trim()},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+      // #endregion
+      
+      const trimmedRedirectUrl = redirectUrl.trim();
+      
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/3e0eb858-a1e3-4b8e-952d-5a749aabbdcd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LoginPage.tsx:22',message:'Before signInWithOAuth',data:{redirectTo:trimmedRedirectUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+      // #endregion
+      
+      const { error, data } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: redirectUrl,
+          redirectTo: trimmedRedirectUrl,
         },
       });
 
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/3e0eb858-a1e3-4b8e-952d-5a749aabbdcd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LoginPage.tsx:30',message:'After signInWithOAuth',data:{error:error?.message,hasError:!!error,url:data?.url},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
+
       if (error) throw error;
     } catch (err: any) {
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/3e0eb858-a1e3-4b8e-952d-5a749aabbdcd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LoginPage.tsx:35',message:'Error caught',data:{errorMessage:err?.message,errorStack:err?.stack},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+      // #endregion
       setError(err.message || 'שגיאה בהתחברות');
       setLoading(false);
     }
