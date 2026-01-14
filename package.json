@@ -10,7 +10,8 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "setup": "npm install && echo Setup complete! Create .env.local file with Supabase credentials."
+    "setup": "npm install && echo Setup complete! Create .env.local file with Supabase credentials.",
+    "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

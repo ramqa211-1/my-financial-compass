@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+  workflow_dispatch: # מאפשר הפעלה ידנית
 
 permissions:
   contents: read
@@ -40,6 +41,11 @@ jobs:
           NODE_ENV: production
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      
+      - name: Verify build output
+        run: |
+          ls -la dist/
+          echo "Build completed successfully"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
