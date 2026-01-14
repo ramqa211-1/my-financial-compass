@@ -25,12 +25,13 @@ const AssetDistributionChart = ({ data }: AssetDistributionChartProps) => {
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
+      const percentage = total > 0 ? ((data.value / total) * 100).toFixed(1) : '0';
       return (
         <div className="bg-card rounded-xl p-3 shadow-medium border border-border">
           <p className="font-semibold text-foreground">{data.name}</p>
           <p className="text-sm text-muted-foreground">{formatCurrency(data.value)}</p>
           <p className="text-sm font-medium text-primary">
-            {((data.value / total) * 100).toFixed(1)}%
+            {percentage}%
           </p>
         </div>
       );
@@ -90,7 +91,7 @@ const AssetDistributionChart = ({ data }: AssetDistributionChartProps) => {
               <div className="text-left">
                 <p className="font-semibold text-foreground">{formatCurrency(item.value)}</p>
                 <p className="text-xs text-muted-foreground">
-                  {((item.value / total) * 100).toFixed(1)}%
+                  {total > 0 ? ((item.value / total) * 100).toFixed(1) : '0'}%
                 </p>
               </div>
             </motion.div>
